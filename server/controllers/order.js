@@ -68,12 +68,17 @@ export const processOrder = asyncError(async (req, res, next) => {
 
   if (!order) return next(new ErrorHandler("Invalid Order Id", 404));
 
-  // if(order.orderStatus === "Preparing") order.orderStatus = "Shipped";
-  // else if (order.orderStatus === "Shipped") {order.orderStatus = "Delievered";
-  // order.delieveredAt=Date.now;}
-  // else if
+  if (order.orderStatus === "Preparing") order.orderStatus = "Shipped";
+  else if (order.orderStatus === "Shipped") {
+    order.orderStatus = "Delievered";
+    order.delieveredAt = new Date(Date.now());
+  } else if (order.orderStatus === "Delievered")
+    return next(new ErrorHandler("food already delievered", 400));
+
+  await order.save();
 
   res.status(200).json({
-    success: true
+    success: true,
+    message: "Status Updated Successfully"
   });
 });

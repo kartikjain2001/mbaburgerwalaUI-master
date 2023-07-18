@@ -8,3 +8,12 @@ export const isAuthenticate = (req, res, next) => {
   }
   next();
 };
+
+export const authorizeAdmin = (req, res, next) => {
+  const token = req.cookies["connect.sid"]; //cookie is different for every individual. So, we will use it to check if the person is logged in or now.
+
+  if (req.user.role !== "admin") {
+    return next(new ErrorHandler("Only Admin Allowed", 405));
+  }
+  next();
+};
