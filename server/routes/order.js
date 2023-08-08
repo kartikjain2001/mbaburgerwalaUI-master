@@ -3,7 +3,9 @@ import {
   getAdminOrders,
   getMyOrders,
   getOrderDetails,
+  paymentVerification,
   placeOrder,
+  placeOrderOnlline,
   processOrder
 } from "../controllers/order.js";
 import { authorizeAdmin, isAuthenticate } from "../middlewares/auth.js";
@@ -11,6 +13,9 @@ import { authorizeAdmin, isAuthenticate } from "../middlewares/auth.js";
 const router = express.Router();
 
 router.post("/createorder", isAuthenticate, placeOrder);
+
+router.post("/createorderonline", isAuthenticate, placeOrderOnlline);
+router.post("/paymentverification", isAuthenticate, paymentVerification);
 
 router.get("/myorders", isAuthenticate, getMyOrders);
 
